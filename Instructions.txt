@@ -1,0 +1,17 @@
+1. You are to design a software driver for a vending machine
+2. The vending machine operator will provide a list of inventory as well as the intial change present in the machine
+3. A list of user inputs (change deposited, buttons pressed) will be provided
+4. A final inventory must be the output of this program this will include the final counts of all product, the 
+   remaining change and the total dollar value present in the change box.
+5. Items are referenced by a number and a letter (e.g. A4, E8). This will always be a single letter and a single number.
+6. Change is represented by a '$' character followed by a slot number.
+7. Buttons and change may be pressed and deposited in any order respectively.
+8. Once a valid combination of total change deposited and buttons pressed has been reached
+   the machine will depense the corresponding item.
+9. The reset button (represented by a '#' character) will clear any previously pressed buttons as well.
+10. Dispensing an empty slot will prompt for a different selection (i.e. deposited change remains in the machine)
+
+2nd point.
+11. All deposits go to the change box, refunds are given from the intial change provided as a part of the inventory list.
+   If we are unable to give exact change (out of a particular small denomination coin)
+   the next smallest denomination will be returned in its place.
