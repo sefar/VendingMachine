@@ -1,17 +1,52 @@
-1. You are to design a software driver for a vending machine
-2. The vending machine operator will provide a list of inventory as well as the intial change present in the machine
-3. A list of user inputs (change deposited, buttons pressed) will be provided
-4. A final inventory must be the output of this program this will include the final counts of all product, the 
-   remaining change and the total dollar value present in the change box.
-5. Items are referenced by a number and a letter (e.g. A4, E8). This will always be a single letter and a single number.
-6. Change is represented by a '$' character followed by a slot number.
-7. Buttons and change may be pressed and deposited in any order respectively.
-8. Once a valid combination of total change deposited and buttons pressed has been reached
-   the machine will depense the corresponding item.
-9. The reset button (represented by a '#' character) will clear any previously pressed buttons as well.
-10. Dispensing an empty slot will prompt for a different selection (i.e. deposited change remains in the machine)
+1st Point:
+	You are to design a software driver for a vending machine.
+    The vending machine operator will provide a list of inventory.
+    A list of user inputs (change deposited, buttons pressed) will be provided.
+    Items are referenced by a number and a letter (e.g. A4, E8). This will always be a single letter and a single number.
+    
+    Buttons and change may be pressed and deposited in any order respectively.
+    Once a valid combination of total change deposited and buttons pressed has been reached the machine will dispense the corresponding item.
+    The refund button (represented by a '#' character) will clear any previously pressed buttons as well.
+	Invalid selections will reset the machine's recorded button presses, the deposited change will remain.
+	Invalid Sections: 
+		2 letters in a row.
+		2 numbers in a row.
+		1 letter and 1 number for a slot that wasn't in the original inventory.
+		1 letter and 1 number for a slot that is now empty.
+		
+	Example Actions: 
+	Say A3 costs 0.95
+	
+	A,3,$1 (Dispense A3)
+	A,3,$0.5,$0.5 (Dispense A3)
+	$0.5,A,$0.5,3 (Dispense A3)
+	A,3,$0.5,#,$0.5,$0.5 (Nothing dispensed yet, but there is $1 in the machine)
 
-2nd point.
-11. All deposits go to the change box, refunds are given from the intial change provided as a part of the inventory list.
-   If we are unable to give exact change (out of a particular small denomination coin)
-   the next smallest denomination will be returned in its place.
+	A final inventory must be the output of this program this will include the final counts of all product.
+	This inventory output will match the order of the items in the provided initial inventory.
+	The total change present in the change box will also be provided on the last line of the file prefaced by a pair of '$' symbols.
+	Total change is expressed with two digits after the decimal place.
+	
+	Initial Inventory:   Actions    Final Inventory:
+	A1,Candy1,0.05,1      =>        A1,Candy1,0 
+	B1,Candy7,0.65,12     =>        B1,Candy7,5
+									$$,4.60
+	
+2nd Point:
+	Change is given from the initial change provided as a part of the inventory list.
+	Change is represented by a '$' character followed by a slot number.
+	Change is dispensed using the least number of coins.
+    If we are unable to give exact change (out of a particular small denomination coin)
+    the next smallest denomination will be returned in its place.
+	
+	(All purchases are made with $1 deposits)
+	Initial Inventory:   Actions    Final Inventory:
+	A1,Candy1,0.05,1      =>        A1,Candy1,0 
+	B1,Candy7,0.65,12     =>        B1,Candy7,5
+	$1,0.05,100           =>        $1,82
+	$2,0.25,200           =>        $2,190
+									$$,8.00
+	
+3rd Point:
+	Upon running out of a particular item send an HTTP POST request to http://www.bing.com/vendco/restock?item=<item name>
+	This will inform Vendco that the machine needs to be restocked, you will be provided a response code

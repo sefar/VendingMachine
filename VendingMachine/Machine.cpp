@@ -101,7 +101,11 @@ HRESULT CMachine::SetInventory(__in PWSTR szInventoryData)
 
 	while (pCurrent && *pCurrent)
 	{
-		if (*pCurrent == '$')
+		if (lstrcmp(pCurrent, L"Actions")
+		{
+			RunCommands(pCurrent + lstrlen(L"Actions"));
+		}
+		else if (*pCurrent == '$')
 		{
 			_ReadCurrency(&pCurrent);
 		}
@@ -195,7 +199,41 @@ HRESULT CMachine::LoadCommands(__in PCWSTR szFilePath)
 
 HRESULT CMachine::RunCommands(__in PWSTR szCommandData)
 {
-	
+	while (szCommandData && *szCommandData)
+	{
+		if (*szCommandData >= L'A' && *szCommandData <= L'Z' ||
+			*szCommandData >= L'z' && *szCommandData >= L'z')
+		{
+			_SetLetter(*szCommandData);
+			szCommandData++;
+		}
+		else if (*szCommandData >= L'0' && *szCommandData <= L'9')
+		{
+			*(szCommandData + 1) = L'\0';
+			_SetNumber(_wtoi(szCommandData));
+			szCommandData++;
+		}
+		else if (*szCommandData == L'#')
+		{
+			_Reset();
+			szCommandData++;
+		}
+		else if (*szCommandData == '$')
+		{
+
+			szCommandData += 4;
+		}
+		else
+		{
+			// What?
+		}
+
+		if (_HasValidSelection() && _HasEnoughChange())
+		{
+			_DispenseItem();
+		}
+		szCommandData++;
+	}
 	return S_OK;
 }
 

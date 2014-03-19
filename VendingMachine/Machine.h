@@ -37,5 +37,8 @@ protected:
 
 	CDisplayArea* m_dispArea;
 	CChangeTray* m_changeTray;
+	bool _SetLetter(WCHAR letter);
+	bool _SetNumber(UINT number);
+
 };
 
