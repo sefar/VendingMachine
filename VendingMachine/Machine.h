@@ -34,11 +34,20 @@ protected:
 	void _ReadCurrency(__inout WCHAR** pCurrent);
 	void _ReadCSVLine(__inout WCHAR** pCurrent, __out_opt WCHAR** location, __out_opt WCHAR** name, __out double* value, __out UINT* count);
 	void _ReadItem(__inout WCHAR** pCurrent);
+	bool _SetLetter(WCHAR letter);
+	bool _SetNumber(int number);
+	void _Reset();
+	void _DepositChange(double value);
+	bool _DispenseItem();
+	bool _HasValidSelection();
+	bool _HasEnoughChange();
+
 
 	CDisplayArea* m_dispArea;
 	CChangeTray* m_changeTray;
-	bool _SetLetter(WCHAR letter);
-	bool _SetNumber(UINT number);
+	WCHAR m_letter;
+	int m_number;
+	double m_changeDeposited;
 
 };
 

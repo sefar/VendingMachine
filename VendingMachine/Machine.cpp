@@ -209,8 +209,9 @@ HRESULT CMachine::RunCommands(__in PWSTR szCommandData)
 		}
 		else if (*szCommandData >= L'0' && *szCommandData <= L'9')
 		{
-			*(szCommandData + 1) = L'\0';
-			_SetNumber(_wtoi(szCommandData));
+			WCHAR szSlotNum[1];
+			szSlotNum[0] = *szCommandData;
+			_SetNumber(_wtoi(szSlotNum));
 			szCommandData++;
 		}
 		else if (*szCommandData == L'#')
@@ -220,7 +221,9 @@ HRESULT CMachine::RunCommands(__in PWSTR szCommandData)
 		}
 		else if (*szCommandData == '$')
 		{
-
+			WCHAR szDeposit[4];
+			lstrcpyn(szDeposit, szCommandData, 4);
+			_DepositChange(_wtof(szDeposit));
 			szCommandData += 4;
 		}
 		else
@@ -242,3 +245,57 @@ HRESULT CMachine::OutputReport(__in PCWSTR szFilePath)
 
 	return S_OK;
 }
+
+bool CMachine::_SetLetter(WCHAR letter)
+{
+	if (m_letter == L'\0')
+	{
+		return false;
+	}
+	
+	m_letter = letter;
+	return true;
+}
+
+bool CMachine::_SetNumber(int number)
+{
+	if (m_number == -1)
+	{
+		return false;
+	}
+
+	m_number = number;
+	return true;
+}
+
+void CMachine::_Reset()
+{
+	m_number = -1;
+	m_letter = L'\0';
+}
+
+void CMachine::_DepositChange(double value)
+{
+
+}
+
+bool CMachine::_DispenseItem()
+{
+
+}
+
+bool CMachine::_HasValidSelection()
+{
+	return m_letter != L'\0' && m_number != -1;
+}
+
+bool CMachine::_HasEnoughChange()
+{
+
+}
+
+CDisplayArea* m_dispArea;
+CChangeTray* m_changeTray;
+WCHAR m_letter;
+int m_number;
+double m_changeDeposited;
